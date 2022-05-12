@@ -1,0 +1,187 @@
+appent_dot_mydomain = no
+
+#alias_maps = dbm:/etc/aliases
+alias_maps = hash:/etc/aliases
+#alias_maps = hash:/etc/aliases, nis:mail.aliases
+#alias_maps = netinfo:/aliases
+
+#alias_database = dbm:/etc/aliases
+#alias_database = dbm:/etc/mail/aliases
+alias_database = hash:/etc/aliases
+#alias_database = hash:/etc/aliases, hash:/opt/majordomo/aliases
+
+biff = no
+
+command_directory = /usr/sbin
+config_directory = /etc/postfix
+
+daemon_directory = /usr/libexec/postfix
+
+data_directory = /var/lib/postfix
+
+debug_peer_level = 2
+
+#debug_peer_list = 127.0.0.1
+#debug_peer_list = some.domain
+
+debugger_command =
+         PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+	          ddd $daemon_directory/$process_name $process_id & sleep 5
+
+# debugger_command =
+#       PATH=/bin:/usr/bin:/usr/local/bin; export PATH; (echo cont;
+#       echo where) | gdb $daemon_directory/$process_name $process_id 2>&1
+#       >$config_directory/$process_name.$process_id.log & sleep 5
+#
+# debugger_command =
+#       PATH=/bin:/usr/bin:/sbin:/usr/sbin; export PATH; screen
+#       -dmS $process_name gdb $daemon_directory/$process_name
+#       $process_id & sleep 1
+
+#default_destination_concurrency_limit = 20
+
+#default_privs = nobody
+
+dovecot_destination_recipient_limit = 1
+
+#fallback_transport = lmtp:unix:/var/lib/imap/socket/lmtp
+#fallback_transport =
+
+#fast_flush_domains = $relay_domains
+
+#header_checks = regexp:/etc/postfix/header_checks
+
+#home_mailbox = Mailbox
+home_mailbox = Maildir/
+
+html_directory = no
+
+#in_flow_delay = 1s
+
+inet_interfaces = all
+#inet_interfaces = $myhostname
+#inet_interfaces = $myhostname, localhost
+#inet_interfaces = localhost
+
+inet_protocols = all
+
+# local_destination_recipient_limit = 300
+
+# local_destination_concurrency_limit = 2
+# local_destination_concurrency_limit = 5
+
+#local_recipient_maps = unix:passwd.byname $alias_maps
+#local_recipient_maps = proxy:unix:passwd.byname $alias_maps
+#local_recipient_maps =
+
+#luser_relay = $user@other.host
+#luser_relay = $local@other.host
+#luser_relay = admin+$local
+
+mail_owner = postfix
+
+#mail_spool_directory = /var/mail
+#mail_spool_directory = /var/spool/mail
+
+#mailbox_command = /some/where/procmail
+#mailbox_command = /some/where/procmail -a "$EXTENSION"
+
+#mailbox_transport = lmtp:unix:/var/lib/imap/socket/lmtp
+#mailbox_transport = cyrus
+
+mailq_path = /usr/bin/mailq.postfix
+
+manpage_directory = /usr/share/man
+
+message_size_limit = 4194304
+
+#myhostname = host.domain.tld
+#myhostname = virtual.domain.tld
+myhostname = MYHOSTNAME
+
+#mydomain = domain.tld
+mydomain = MYDOMAIN
+
+#myorigin = $myhostname
+myorigin = $mydomain
+
+mydestination = $myhostname, localhost.$mydomain, localhost
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
+#       mail.$mydomain, www.$mydomain, ftp.$mydomain
+
+mynetworks = 168.100.189.0/28, 127.0.0.0/8, 172.17.0.0/16, 10.0.0.0/8
+#mynetworks = $config_directory/mynetworks
+#mynetworks = hash:/etc/postfix/network_table
+
+#mynetworks_style = class
+#mynetworks_style = subnet
+#mynetworks_style = host
+
+newaliases_path = /usr/bin/newaliases.postfix
+
+#proxy_interfaces =
+#proxy_interfaces = 1.2.3.4
+
+queue_directory = /var/spool/postfix
+
+readme_directory = /usr/share/doc/postfix-2.10.1/README_FILES
+
+#relay_domains = $mydestination
+
+#relayhost = $mydomain
+#relayhost = [gateway.my.domain]
+#relayhost = [mailserver.isp.tld]
+#relayhost = uucphost
+#relayhost = [an.ip.add.ress]
+relayhost = [email-smtp.ap-northeast-2.amazonaws.com]:587
+
+#relay_recipient_maps = hash:/etc/postfix/relay_recipients
+
+sample_directory = /usr/share/doc/postfix-2.10.1/samples
+
+sendmail_path = /usr/sbin/sendmail.postfix
+
+setgid_group = postdrop
+
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+
+smtp_sasl_security_options = noanonymous
+
+smtp_sasl_auth_enable = yes
+
+smtp_use_tls = yes
+
+smtp_tls_security_level = encrypt
+
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+#smtpd_banner = $myhostname ESMTP $mail_name
+smtpd_banner = $myhostname ESMTP $mail_name ($mail_version)
+
+smtpd_recipient_restrictions = permit_mynetworks
+
+smtpd_sasl_type = dovecot
+
+smtpd_sasl_path = private/auth
+
+smtpd_tls_CAfile = /tls/ca.pem
+smtpd_tls_cert_file = /tls/cert.pem
+smtpd_tls_key_file = /tls/privkey.pem
+
+
+smtpd_tls_loglevel = 4
+
+smtpd_tls_security_level = may
+
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+
+#soft_bounce = no
+
+unknown_local_recipient_reject_code = 550
+
+virtual_alias_maps = mysql:/etc/postfix/database-alias.cf
+virtual_mailbox_domains = mysql:/etc/postfix/database-domains.cf
+virtual_mailbox_maps = mysql:/etc/postfix/database-users.cf
+
+virtual_transport = dovecot
