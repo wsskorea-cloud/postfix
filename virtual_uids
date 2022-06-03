@@ -1,0 +1,11 @@
+server_host = ldap://ldap.wsskorea.cloud
+server_port = 389
+search_base = dc=wsskorea,dc=cloud
+query_filter = (mail=%s)
+result_attribute = uid
+bind = yes
+version = 3
+debuglevel = 0
+bind_dn = cn=admin,dc=wsskorea,dc=cloud
+bind_pw = admin12345!@
+domain = wsskorea.cloud

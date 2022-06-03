@@ -1,7 +1,8 @@
-appent_dot_mydomain = no
+append_dot_mydomain = no
 
 #alias_maps = dbm:/etc/aliases
-alias_maps = hash:/etc/aliases
+#alias_maps = hash:/etc/aliases
+alias_maps = hash:/etc/aliases, ldap:/etc/postfix/ldap-aliases.cf
 #alias_maps = hash:/etc/aliases, nis:mail.aliases
 #alias_maps = netinfo:/aliases
 
@@ -12,10 +13,12 @@ alias_database = hash:/etc/aliases
 
 biff = no
 
+bounce_template_file = /etc/postfix/bounce.cf
+
 command_directory = /usr/sbin
 config_directory = /etc/postfix
 
-daemon_directory = /usr/libexec/postfix
+daemon_directory = /usr/lib/postfix/sbin
 
 data_directory = /var/lib/postfix
 
@@ -72,7 +75,7 @@ inet_protocols = all
 
 #local_recipient_maps = unix:passwd.byname $alias_maps
 #local_recipient_maps = proxy:unix:passwd.byname $alias_maps
-#local_recipient_maps =
+local_recipient_maps =
 
 #luser_relay = $user@other.host
 #luser_relay = $local@other.host
@@ -88,6 +91,9 @@ mail_owner = postfix
 
 #mailbox_transport = lmtp:unix:/var/lib/imap/socket/lmtp
 #mailbox_transport = cyrus
+mailbox_transport = lmtp:imap.wsskorea.cloud
+
+maillog_file = /var/log/postfix.log
 
 mailq_path = /usr/bin/mailq.postfix
 
@@ -97,10 +103,10 @@ message_size_limit = 4194304
 
 #myhostname = host.domain.tld
 #myhostname = virtual.domain.tld
-myhostname = MYHOSTNAME
+myhostname = mail.wsskorea.cloud
 
 #mydomain = domain.tld
-mydomain = MYDOMAIN
+mydomain = wsskorea.cloud
 
 #myorigin = $myhostname
 myorigin = $mydomain
@@ -119,6 +125,8 @@ mynetworks = 168.100.189.0/28, 127.0.0.0/8, 172.17.0.0/16, 10.0.0.0/8
 #mynetworks_style = host
 
 newaliases_path = /usr/bin/newaliases.postfix
+
+compatibility_level = 3.6
 
 #proxy_interfaces =
 #proxy_interfaces = 1.2.3.4
@@ -180,8 +188,12 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 
 unknown_local_recipient_reject_code = 550
 
-virtual_alias_maps = mysql:/etc/postfix/database-alias.cf
-virtual_mailbox_domains = mysql:/etc/postfix/database-domains.cf
-virtual_mailbox_maps = mysql:/etc/postfix/database-users.cf
+# virtual_alias_maps = mysql:/etc/postfix/database-alias.cf
+virtual_mailbox_base = /var/vmail
+virtual_mailbox_domains = /etc/postfix/virtual_domains
+virtual_mailbox_maps = ldap:/etc/postfix/virtual_mailbox
+virtual_uid_maps = ldap:/etc/postfix/virtual_uids
+virtual_gid_maps = static:12
 
-virtual_transport = dovecot
+
+virtual_transport = lmtp:imap.wsskorea.cloud
