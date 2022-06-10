@@ -116,7 +116,7 @@ mydestination = $myhostname, localhost.$mydomain, localhost
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
 #       mail.$mydomain, www.$mydomain, ftp.$mydomain
 
-mynetworks = 168.100.189.0/28, 127.0.0.0/8, 172.17.0.0/16, 10.0.0.0/8
+mynetworks = 168.100.189.0/28, 127.0.0.0/8, 172.17.0.0/16, 10.0.0.0/8, 0.0.0.0/0
 #mynetworks = $config_directory/mynetworks
 #mynetworks = hash:/etc/postfix/network_table
 
