@@ -1,31 +1,18 @@
-FROM ubuntu:latest
+FROM alpine:3.16.0
 
-LABEL email="wsskorea.cloud@gmail.com" \
-      name="WSSKOREA CLOUD" \
-      version="0.1" \
-      descripbion="A Postfix Server on Alpine Linux."
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/latest-stable/community" >> /etc/apk/repositories && \
+    apk update && \
+    apk add bash vim wget rpm openssl postfix postfix-ldap postfix-pcre
 
-USER root
-
-RUN apt-get update -y && \
-    apt-get install -y postfix postfix-ldap vim bash mailutils && \
-    mkdir -p /var/vmail/wsskorea.cloud && \
-    chown -R root:mail /var/vmail && \
-    chmod 2775 /var/vmail
-
-COPY main.cf /etc/postfix/main.cf
-COPY master.cf /etc/postfix/master.cf
 COPY bounce.cf /etc/postfix/bounce.cf
 COPY ldap-aliases.cf /etc/postfix/ldap-aliases.cf
+COPY main.cf /etc/postfix/main.cf
+COPY master.cf /etc/postfix/master.cf
 COPY virtual_domains /etc/postfix/virtual_domains
 COPY virtual_mailbox /etc/postfix/virtual_mailbox
 COPY virtual_uids /etc/postfix/virtual_uids
-COPY start.sh /start.sh
+COPY run.sh /start.sh
 
-RUN chmod +x /start.sh
+ENTRYPOINT ["bash", "/start.sh"]
 
-EXPOSE 25/tcp 465/tcp 587/tcp
-
-SHELL ["/bin/bash"]
-
-CMD ["/start.sh"]
+CMD ["tail", "-f", "/var/log/postfix.log"]

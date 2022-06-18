@@ -36,7 +36,7 @@ local_recipient_maps =
 
 mail_owner = postfix
 
-mailbox_transport = lmtp:DOVECOT_URL
+mailbox_transport = lmtp:imap.wsskorea.cloud
 
 maillog_file = /var/log/postfix.log
 
@@ -46,10 +46,11 @@ manpage_directory = /usr/share/man
 
 message_size_limit = 4194304
 
-myhostname = MYHOSTNAME
+myhostname = mail.wsskorea.cloud
 
-mydomain = DOMAIN
+mydomain = wsskorea.cloud
 
+#myorigin = $myhostname
 myorigin = $mydomain
 
 mydestination = $myhostname, localhost.$mydomain, localhost
@@ -66,7 +67,7 @@ readme_directory = /usr/share/doc/postfix-2.10.1/README_FILES
 
 #relay_domains = $mydestination
 
-relayhost = [email-smtp.us-east-1.amazonaws.com]:587
+relayhost = [email-smtp.ap-northeast-2.amazonaws.com]:587
 
 sample_directory = /usr/share/doc/postfix-2.10.1/samples
 
@@ -80,7 +81,7 @@ smtp_sasl_security_options = noanonymous
 
 smtp_sasl_auth_enable = yes
 
-smtp_use_tls = TLS
+smtp_use_tls = no
 #smtp_use_tls = yes
 
 smtp_tls_security_level = encrypt
@@ -95,9 +96,9 @@ smtpd_sasl_type = dovecot
 
 smtpd_sasl_path = private/auth
 
-#smtpd_tls_CAfile = /tls/ca.pem
-#smtpd_tls_cert_file = TLS_CERT
-#smtpd_tls_key_file = TLS_KEY
+smtpd_tls_CAfile = /tls/ca.pem
+smtpd_tls_cert_file = /tls/cert.pem
+smtpd_tls_key_file = /tls/privkey.pem
 
 
 smtpd_tls_loglevel = 4
@@ -115,4 +116,4 @@ virtual_uid_maps = ldap:/etc/postfix/virtual_uids
 virtual_gid_maps = static:12
 
 
-virtual_transport = lmtp:DOVECOT_URL
+virtual_transport = lmtp:imap.wsskorea.cloud
